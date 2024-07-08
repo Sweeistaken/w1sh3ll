@@ -1,2 +1,2 @@
-# wishell
-SH-like shell for Windows!
+# WiSHell
+Windows SHell, an SH-like shell for Windows.
