@@ -8,7 +8,7 @@ void resetConsole()
     Console.ForegroundColor = ConsoleColor.Gray;
 }
 string prompt = Environment.UserName+"@"+System.Net.Dns.GetHostName();
-string command = "";
+var command = "";
 string pwd = "";
 string home = "";
 void prepareConsole()
