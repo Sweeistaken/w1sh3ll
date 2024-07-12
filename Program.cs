@@ -1,7 +1,8 @@
-﻿// Start the session by spitting out the version then defining variables
+﻿// Start the session
 using System.Data;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
-
+resetConsole();
 Console.WriteLine("W1SH3ll version 0.1a1");
 void resetConsole()
 {
@@ -10,6 +11,7 @@ void resetConsole()
 string prompt = Environment.UserName+"@"+System.Net.Dns.GetHostName();
 var command = "";
 string pwd = "";
+int exitcode = 0;
 string home = "";
 void prepareConsole()
 {
@@ -21,19 +23,26 @@ void prepareConsole()
     Console.ForegroundColor = ConsoleColor.Blue;
     if (pwd == home) { Console.Write(" ~ "); } else { Console.Write(" " + pwd.Replace(home, "~\\") + " "); }
     resetConsole();
+    if (exitcode != 0) {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.Write(exitcode.ToString() + " ");
+        resetConsole();
+    }
     Console.Write("$ ");
 }
 while (true) {
     prepareConsole();
+    exitcode = 0;
     command = Console.ReadLine();
     if (command != null)
     {
+        command = command.Replace("~", home);
         string[] commands = command.Split(" ");
         if (commands[0] == "exit")
         {
             break;
         }
-        if (commands[0] == "cd" | commands[0] == "chdir") {
+        else if (commands[0] == "cd" | commands[0] == "chdir") {
             if (commands.Length > 1) {
                 try
                 {
@@ -44,18 +53,21 @@ while (true) {
                     } else {
                         Directory.SetCurrentDirectory(pwd + "\\" + string.Join(" ", temp));
                     }
-                    
-                } catch(Exception ex)
+
+                } catch (Exception ex)
                 {
-                    Console.WriteLine("chdir error: " + ex.ToString());
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("chdir error: " + ex.Message);
+                    exitcode++;
                 }
             } else
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("chdir error: Directory name expected.");
+                exitcode++;
             }
         }
-        if (commands[0] == "ls" | commands[0] == "dir")
+        else if (commands[0] == "ls" | commands[0] == "dir")
         {
             List<string> tmp = Directory.GetFileSystemEntries(pwd, "*", SearchOption.TopDirectoryOnly).ToList();
             foreach (string i in tmp)
@@ -70,6 +82,49 @@ while (true) {
                     resetConsole();
                 }
             }
+        }
+        else if (commands[0] == "clear")
+        {
+            Console.Clear();
+        }
+        else
+        {
+            var temp = commands.ToList();
+            temp.RemoveAt(0);
+            var process = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = commands[0],
+                    Arguments = string.Join(" ", temp)
+                }
+            };
+            try
+            {
+                process.Start();
+                process.WaitForExit();
+            }
+            catch (FileNotFoundException)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Command not found.");
+            }
+            catch (InvalidOperationException)
+            {
+                continue;
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(ex.Message);
+            }
+            try {
+                exitcode = process.ExitCode;
+            } catch
+            {
+                exitcode = 1;
+            }
+            
         }
     }
 }
