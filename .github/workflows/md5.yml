@@ -10,9 +10,9 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
-    - run: chmod 1777 md5.sh
+    - uses: actions/checkout@v4.1.7
     - name: Create md5 checksums
-      run: ./md5.sh
+      run: find -type f -exec md5sum "{}" + > project.md5
     - name: Check the new checksums
       run: md5sum -c project.md5
     - name: Commit
