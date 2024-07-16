@@ -11,6 +11,7 @@ on:
       - "LICENSE"
       - "README.md"
       - ".github/web/"
+      - "project.md5"
   pull_request:
     branches: [ "main" ]
     paths-ignore:
