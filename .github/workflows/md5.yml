@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4.1.7
+    - run: rm project.md5
     - name: Create md5 checksums
       run: find -path ./project.md5 -path ./.git -prune -o -type f -exec md5sum "{}" + > project.md5
     - run: cat project.md5
