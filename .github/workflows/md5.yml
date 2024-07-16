@@ -13,7 +13,7 @@ jobs:
     - uses: actions/checkout@v4.1.7
     - run: rm project.md5
     - name: Create md5 checksums
-      run: find -path ./project.md5 -path ./.git -prune -o -type f -exec md5sum "{}" + > project.md5
+      run: find -path ./.git -prune -o -type f -exec md5sum "{}" + > project.md5
     - run: cat project.md5
     - name: Check the new checksums
       run: md5sum -c project.md5
