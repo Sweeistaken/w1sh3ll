@@ -122,7 +122,7 @@ while (true) {
                 exitcode = process.ExitCode;
             } catch
             {
-                exitcode = 1;
+                exitcode = 127;
             }
             
         }
