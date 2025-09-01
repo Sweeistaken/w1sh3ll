@@ -23,15 +23,13 @@ on:
 jobs:
   build:
 
-    runs-on: windows-latest
+    runs-on: alpine
     environment: .net-test
 
     steps:
     - uses: actions/checkout@v4
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
+    - name: Install .NET
+      run: apk add dotnet8-sdk
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
