@@ -1,8 +1,0 @@
-7a35cee0946b46b1ced9985bff64c35f  ./LICENSE
-a58726053749c03cb02ca87659ddf89d  ./.gitignore
-d83a9dc18a5a3880f69db4aef76c652b  ./.github/workflows/md5.yml
-8245be20f7976528760f1a8651beae55  ./.github/workflows/dotnet.yml
-0ff85413bae96d787a54cdff2c735f87  ./wishell.sln
-2cd2d94838da77e3dceb604b13c22d2d  ./README.md
-802adc33c7d4b97e0f369cbe71a92872  ./Program.cs
-9545143c5605464f78877645a3031201  ./wishell.csproj
